@@ -17,7 +17,7 @@ pygame.display.set_caption("Игра Жизнь")
 clock = pygame.time.Clock()
 
 # Создание рабочего поля
-fieldSize = [20, 100]
+fieldSize = [100, 100]
 field = gamerule.Field(fieldSize[0], fieldSize[1])
 
 field.setCells([[2, 1], 
