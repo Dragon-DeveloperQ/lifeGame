@@ -29,41 +29,41 @@ class Field:
     def returnCells(self):
         return self.__CellPos
 
+
     def step(self):
-        __CellPosNext = []
-        for y in range(self.__sizeY):
-            for x in range(self.__sizeX):
-                count = 0
-                
-                duration = [
+        CellPosNext = []
+        
+        duration = [
                     (-1, -1), (0, -1), (1, -1),
                     (-1, 0),           (1, 0),
                     (-1, 1),  (0, 1),  (1, 1)
                 ]
                 
-                for dx, dy in duration:
-                    nx, ny = dx+x, dy+y
-                    if 0 <= nx < self.__sizeX and 0 <= ny < self.__sizeY:
-                        if [nx, ny] in self.__CellPos:
-                            count += 1
-                    pass
-
-                if (x == 1) and (y == 1):
-                    print(count)
+        for i in self.__CellPos:
+            for j in duration:
+                x, y = i[0] + j[0], i[1] + j[1]
+                count = 0
+                if [x, y] not in CellPosNext:
                 
-                if [x, y] in self.__CellPos and (count >= 2) and (count <= 3):
-                    __CellPosNext.append([x, y])
-                if [x, y] not in self.__CellPos and (count == 3):
-                    __CellPosNext.append([x, y])
+                    for dx, dy in duration:
+                        nx, ny = dx+x, dy+y
+                        if 0 <= nx < self.__sizeX and 0 <= ny < self.__sizeY:                        
+                            if [nx, ny] in self.__CellPos:
+                               count += 1
+                        pass
                 
-        self.__CellPos = __CellPosNext
+                    if [x, y] in self.__CellPos and (count >= 2) and (count <= 3):
+                        CellPosNext.append([x, y])
+                    if [x, y] not in self.__CellPos and (count == 3):
+                        CellPosNext.append([x, y])
+                
+        self.__CellPos = CellPosNext
         pass
 
 
     def printfield(self):
         for y in range(self.__sizeY):
             for x in range(self.__sizeX):
-                #print('{0} в {1}'.format([x, y], self.__CellPos))
                 if [x, y] in self.__CellPos:
                     print(1, end='')
                 else:

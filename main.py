@@ -1,15 +1,13 @@
 import pygame
-import gamerule
 import os
+import time
 
-
-def clear_terminal():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
+import gamerule
+import startposition
 
 # Инициализация окна
 pygame.init()
-width, height = 1000, 1000
+width, height = 900, 900
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Игра Жизнь")
 
@@ -17,12 +15,12 @@ pygame.display.set_caption("Игра Жизнь")
 clock = pygame.time.Clock()
 
 # Создание рабочего поля
-fieldSize = [100, 100]
+fieldSize = [70, 70]
 field = gamerule.Field(fieldSize[0], fieldSize[1])
 
-field.setCells([[2, 1], 
-                [3, 2],
-                [1, 3], [2, 3], [3, 3]])
+# Стартовая позиция клеток
+field.setCells(startposition.randomPos(fieldSize[0], fieldSize[1], 7))
+#field.setCells(startposition.startPos)
 '''
 field.setCells([[2, 1], 
                 [2, 2],
@@ -41,27 +39,33 @@ while running:
     # Отчистка экрана
     screen.fill((0, 0, 0))  
 
-    # Размета поля
+    # Разметка поля
     for i in range(0, height, height//fieldSize[1]):
         pygame.draw.line(screen, 'white', (i, 0), (i, height), width=1)
     for i in range(0, width, width//fieldSize[0]):
         pygame.draw.line(screen, 'white', (0, i), (width, i), width=1)
 
     # Вывод поля в терминал
-    clear_terminal()
-    # field.printfield()
+    #os.system('clear')
+    #field.printfield()
+
+    # Получение массива активных клеток
     cells = field.returnCells()
-    print('------------------------------------')
    
     # Закрашивание активных ячеек
     for y in range(fieldSize[1]):
         for x in range(fieldSize[1]):
             if [x, y] in cells:
-                pygame.draw.rect(screen, 'white', (x*(height//fieldSize[0]), y*(height//fieldSize[1]), (height//fieldSize[0]), (height//fieldSize[1])))
+                pygame.draw.rect(screen, 'white', (x*(width//fieldSize[0]), y*(height//fieldSize[1]), (width//fieldSize[0]), (height//fieldSize[1])))
+
+    start_time = time.time()
 
     # Обработка времени
     field.step()
 
+    end_time = time.time()
+    print(end_time - start_time)
+
     # Обновление экрана
     pygame.display.flip()  
-    clock.tick(5)  # 60 кадров в секунду
+    clock.tick(10000)  # 60 кадров в секунду
