@@ -25,6 +25,11 @@ class Field:
     def clearField(self):
         self.__CellPos = []
 
+    
+    def SetCell(self, x, y):
+        if [x, y] not in self.__CellPos:
+            self.__CellPos.append([x, y])
+
 
     def returnCells(self):
         return self.__CellPos
@@ -47,7 +52,7 @@ class Field:
                 
                     for dx, dy in duration:
                         nx, ny = dx+x, dy+y
-                        if 0 <= nx < self.__sizeX and 0 <= ny < self.__sizeY:                        
+                        if 0 <= nx < (self.__sizeX - 1) and 0 <= ny < (self.__sizeY - 1):                        
                             if [nx, ny] in self.__CellPos:
                                count += 1
                         pass

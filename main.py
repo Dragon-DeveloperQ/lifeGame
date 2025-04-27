@@ -19,7 +19,7 @@ fieldCount = [70, 70]
 field = gamerule.Field(fieldCount[0], fieldCount[1])
 
 # Стартовая позиция клеток
-field.setCells(startposition.randomPos(fieldCount[0], fieldCount[1], 4))
+field.setCells(startposition.randomPos(fieldCount[0], fieldCount[1], 6))
 #field.setCells(startposition.startPos)
 '''
 field.setCells([[2, 1], 
@@ -29,6 +29,7 @@ field.setCells([[2, 1],
                 
 # Инициализация цикла игры
 running = True
+l = 0
 while running:
 
     # Обработка события выхода
@@ -38,7 +39,7 @@ while running:
 
     # Отчистка экрана
     screen.fill((0, 0, 0))  
-
+    
     # Разметка поля
     fieldSize = [width//fieldCount[0], height//fieldCount[1]]
     for i in range(0, fieldCount[0]+1):
@@ -55,10 +56,10 @@ while running:
     cells = field.returnCells()
    
     # Закрашивание активных ячеек
-    for y in range(fieldCount[1]):
-        for x in range(fieldCount[1]):
-            if [x, y] in cells:
-                pygame.draw.rect(screen, 'white', (x*(width//fieldCount[0]), y*(height//fieldCount[1]), (width//fieldCount[0]), (height//fieldCount[1])))
+    for x, y in cells:
+        if x == 70:
+            print('PANIC')
+        pygame.draw.rect(screen, 'white', (x*fieldSize[0], y*fieldSize[1], fieldSize[0], fieldSize[1]))
 
     start_time = time.time()
 
@@ -70,4 +71,4 @@ while running:
 
     # Обновление экрана
     pygame.display.flip()  
-    clock.tick(10000)  # 60 кадров в секунду
+    clock.tick(20)  # 60 кадров в секунду
