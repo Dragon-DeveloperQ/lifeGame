@@ -2,7 +2,8 @@ from numba import njit
 
 @njit
 def STEP(__CellPos, __sizeX, __sizeY):
-        CellPosNext = []
+        __CellPos = set(__CellPos)
+        CellPosNext = set()
         duration = [
                     (-1, -1), (0, -1), (1, -1),
                     (-1, 0),           (1, 0),
@@ -23,9 +24,9 @@ def STEP(__CellPos, __sizeX, __sizeY):
                         pass
                 
                     if (x, y) in __CellPos and (count >= 2) and (count <= 3):
-                        CellPosNext.append((x, y))
+                        CellPosNext.add((x, y))
                     if (x, y) not in __CellPos and (count == 3):
-                        CellPosNext.append((x, y))
+                        CellPosNext.add((x, y))
                 
         return CellPosNext
         pass

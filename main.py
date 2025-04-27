@@ -19,7 +19,7 @@ fieldCount = [100, 100]
 field = gamerule.Field(fieldCount[0], fieldCount[1])
 
 # Стартовая позиция клеток
-field.setCells(startposition.randomPos(fieldCount[0], fieldCount[1], 6))
+field.setCells(startposition.randomPos(fieldCount[0], fieldCount[1], 2))
 #field.setCells(startposition.startPos)
                 
 # Инициализация цикла игры
@@ -61,6 +61,8 @@ while running:
 
     end_time = time.time()
     print(end_time - start_time)
+
+    '''
     all_time.append(end_time - start_time)
     if len(all_time) > 20:
         sum_time = 0
@@ -68,6 +70,7 @@ while running:
             sum_time += i
         print('Среднее время - {0}'.format(sum_time / len(all_time)))
         running = False
+    '''
 
     # Обновление экрана
     pygame.display.flip()  
