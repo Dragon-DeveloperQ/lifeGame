@@ -1,6 +1,6 @@
 from numba import njit
 
-@njit
+@njit(cache=True)
 def STEP(__CellPos, __sizeX, __sizeY):
         __CellPos = set(__CellPos)
         CellPosNext = set()
