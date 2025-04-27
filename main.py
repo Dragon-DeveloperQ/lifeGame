@@ -15,21 +15,16 @@ pygame.display.set_caption("Игра Жизнь")
 clock = pygame.time.Clock()
 
 # Создание рабочего поля
-fieldCount = [70, 70]
+fieldCount = [100, 100]
 field = gamerule.Field(fieldCount[0], fieldCount[1])
 
 # Стартовая позиция клеток
 field.setCells(startposition.randomPos(fieldCount[0], fieldCount[1], 6))
 #field.setCells(startposition.startPos)
-'''
-field.setCells([[2, 1], 
-                [2, 2],
-                [2, 3]])
-'''
                 
 # Инициализация цикла игры
 running = True
-l = 0
+all_time = []
 while running:
 
     # Обработка события выхода
@@ -57,8 +52,6 @@ while running:
    
     # Закрашивание активных ячеек
     for x, y in cells:
-        if x == 70:
-            print('PANIC')
         pygame.draw.rect(screen, 'white', (x*fieldSize[0], y*fieldSize[1], fieldSize[0], fieldSize[1]))
 
     start_time = time.time()
@@ -68,7 +61,14 @@ while running:
 
     end_time = time.time()
     print(end_time - start_time)
+    all_time.append(end_time - start_time)
+    if len(all_time) > 20:
+        sum_time = 0
+        for i in all_time:
+            sum_time += i
+        print('Среднее время - {0}'.format(sum_time / len(all_time)))
+        running = False
 
     # Обновление экрана
     pygame.display.flip()  
-    clock.tick(20)  # 60 кадров в секунду
+    clock.tick(60)  # кадров в секунду

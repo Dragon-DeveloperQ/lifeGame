@@ -1,3 +1,37 @@
+from numba import njit
+
+@njit
+def STEP(__CellPos, __sizeX, __sizeY):
+        CellPosNext = []
+        duration = [
+                    (-1, -1), (0, -1), (1, -1),
+                    (-1, 0),           (1, 0),
+                    (-1, 1),  (0, 1),  (1, 1)
+                ]
+                
+        for i in __CellPos:
+            for j in duration:
+                x, y = i[0] + j[0], i[1] + j[1]
+                count = 0
+                if (x, y) not in CellPosNext:
+                
+                    for dx, dy in duration:
+                        nx, ny = dx+x, dy+y
+                        if 0 <= nx < (__sizeX - 1) and 0 <= ny < (__sizeY - 1):                        
+                            if (nx, ny) in __CellPos:
+                               count += 1
+                        pass
+                
+                    if (x, y) in __CellPos and (count >= 2) and (count <= 3):
+                        CellPosNext.append((x, y))
+                    if (x, y) not in __CellPos and (count == 3):
+                        CellPosNext.append((x, y))
+                
+        return CellPosNext
+        pass
+
+
+
 class Field:
 
     #field = []
@@ -27,51 +61,12 @@ class Field:
 
     
     def SetCell(self, x, y):
-        if [x, y] not in self.__CellPos:
-            self.__CellPos.append([x, y])
+        if (x, y) not in self.__CellPos:
+            self.__CellPos.append((x, y))
 
 
     def returnCells(self):
         return self.__CellPos
 
-
     def step(self):
-        CellPosNext = []
-        
-        duration = [
-                    (-1, -1), (0, -1), (1, -1),
-                    (-1, 0),           (1, 0),
-                    (-1, 1),  (0, 1),  (1, 1)
-                ]
-                
-        for i in self.__CellPos:
-            for j in duration:
-                x, y = i[0] + j[0], i[1] + j[1]
-                count = 0
-                if [x, y] not in CellPosNext:
-                
-                    for dx, dy in duration:
-                        nx, ny = dx+x, dy+y
-                        if 0 <= nx < (self.__sizeX - 1) and 0 <= ny < (self.__sizeY - 1):                        
-                            if [nx, ny] in self.__CellPos:
-                               count += 1
-                        pass
-                
-                    if [x, y] in self.__CellPos and (count >= 2) and (count <= 3):
-                        CellPosNext.append([x, y])
-                    if [x, y] not in self.__CellPos and (count == 3):
-                        CellPosNext.append([x, y])
-                
-        self.__CellPos = CellPosNext
-        pass
-
-
-    def printfield(self):
-        for y in range(self.__sizeY):
-            for x in range(self.__sizeX):
-                if [x, y] in self.__CellPos:
-                    print(1, end='')
-                else:
-                    print(0, end='')
-            print()
-    
+        self.__CellPos =  STEP(self.__CellPos, self.__sizeX, self.__sizeY)
