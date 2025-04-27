@@ -7,7 +7,7 @@ import startposition
 
 # Инициализация окна
 pygame.init()
-width, height = 900, 900
+width, height = 800, 800
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Игра Жизнь")
 
@@ -15,11 +15,11 @@ pygame.display.set_caption("Игра Жизнь")
 clock = pygame.time.Clock()
 
 # Создание рабочего поля
-fieldSize = [70, 70]
-field = gamerule.Field(fieldSize[0], fieldSize[1])
+fieldCount = [70, 70]
+field = gamerule.Field(fieldCount[0], fieldCount[1])
 
 # Стартовая позиция клеток
-field.setCells(startposition.randomPos(fieldSize[0], fieldSize[1], 7))
+field.setCells(startposition.randomPos(fieldCount[0], fieldCount[1], 4))
 #field.setCells(startposition.startPos)
 '''
 field.setCells([[2, 1], 
@@ -40,11 +40,13 @@ while running:
     screen.fill((0, 0, 0))  
 
     # Разметка поля
-    for i in range(0, height, height//fieldSize[1]):
-        pygame.draw.line(screen, 'white', (i, 0), (i, height), width=1)
-    for i in range(0, width, width//fieldSize[0]):
-        pygame.draw.line(screen, 'white', (0, i), (width, i), width=1)
+    fieldSize = [width//fieldCount[0], height//fieldCount[1]]
+    for i in range(0, fieldCount[0]+1):
+        pygame.draw.line(screen, 'white', (i*fieldSize[0], 0), (i*fieldSize[0], fieldCount[0] * fieldSize[0]), width=1)
+    for i in range(0, fieldCount[1]+1):
+        pygame.draw.line(screen, 'white', (0, i*fieldSize[1]), (fieldCount[0] * fieldSize[0], i*fieldSize[1]), width=1)
 
+    pygame.draw.rect(screen, 'green', (width, height, fieldSize[0], fieldSize[1]))
     # Вывод поля в терминал
     #os.system('clear')
     #field.printfield()
@@ -53,10 +55,10 @@ while running:
     cells = field.returnCells()
    
     # Закрашивание активных ячеек
-    for y in range(fieldSize[1]):
-        for x in range(fieldSize[1]):
+    for y in range(fieldCount[1]):
+        for x in range(fieldCount[1]):
             if [x, y] in cells:
-                pygame.draw.rect(screen, 'white', (x*(width//fieldSize[0]), y*(height//fieldSize[1]), (width//fieldSize[0]), (height//fieldSize[1])))
+                pygame.draw.rect(screen, 'white', (x*(width//fieldCount[0]), y*(height//fieldCount[1]), (width//fieldCount[0]), (height//fieldCount[1])))
 
     start_time = time.time()
 
